@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+
+    <property name="LOG_DIR" value="logs"/>
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <!-- File hiện tại -->
+        <file>${LOG_DIR}/application.log</file>
+
+        <!-- Rolling theo thời gian + dung lượng -->
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <!-- Tạo file mới mỗi phút (pattern %d{yyyy-MM-dd_HH-mm}) -->
+            <fileNamePattern>
+                ${LOG_DIR}/application-%d{yyyy-MM-dd_HH-mm}.%i.log
+            </fileNamePattern>
+
+            <!-- Mỗi file tối đa 1MB -->
+            <maxFileSize>1MB</maxFileSize>
+
+            <!--
+                Giữ log tối đa 1 ngày.
+                Vì rolling theo phút, 1 ngày = 1440 phút → maxHistory = 1440
+            -->
+            <maxHistory>1440</maxHistory>
+
+            <!-- Tổng dung lượng toàn bộ thư mục log không quá 20MB -->
+            <totalSizeCap>20MB</totalSizeCap>
+
+            <!-- Dọn file log cũ khi khởi động lại ứng dụng -->
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+
+        </rollingPolicy>
+
+        <encoder>
+            <pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %msg%n
+            </pattern>
+        </encoder>
+
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>
